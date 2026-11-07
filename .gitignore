@@ -1,0 +1,36 @@
+# The generating prompt is intentionally untracked.
+PROMPT_OF_GENERATING.md
+
+# Local configuration / secrets
+/config.local.php
+.env
+.env.*
+
+# Runtime data
+/data/*
+!/data/.gitkeep
+!/data/.htaccess
+/storage/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# User uploads
+/uploads/*
+!/uploads/.gitkeep
+!/uploads/.htaccess
+
+# Dependencies & build intermediates
+/vendor/
+/node_modules/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.vite/
+
+# Editor tooling
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

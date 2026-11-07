@@ -1,0 +1,36 @@
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never expose application internals or runtime data over HTTP.
+    RewriteRule ^(?:include|views|frontend|data|vendor|node_modules)(?:/|$) - [F,L]
+    RewriteRule ^uploads/.*\.(?:php[0-9]*|phtml|phar|cgi|pl|py|sh|js|html?)$ - [F,L]
+    RewriteRule ^PROMPT_OF_GENERATING\.md$ - [F,L]
+    RewriteRule (^|/)\.(?!well-known/) - [F,L]
+
+    # Serve real static files and directories directly.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else is handled by the front controller.
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+<FilesMatch "^(Database|User|Keys|Project|Notification|Site|config|config\.local|router)\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
